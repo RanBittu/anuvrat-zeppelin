@@ -212,6 +212,117 @@
       "progressUpdateIntervalMs": 500
     },
     {
+      "text": "%md\n\nRemove the GKs and only predict the outfield players this time.",
+      "user": "anonymous",
+      "dateUpdated": "Apr 30, 2017 11:43:49 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003cp\u003eRemove the GKs and only predict the outfield players this time.\u003c/p\u003e\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1493531474356_-1444299278",
+      "id": "20170429-225114_2021975373",
+      "dateCreated": "Apr 29, 2017 10:51:14 PM",
+      "dateStarted": "Apr 30, 2017 11:43:49 AM",
+      "dateFinished": "Apr 30, 2017 11:43:49 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark\n\nval playerAttributesDF \u003d \n    spark\n        .read\n        .option(\"inferSchema\", \"true\")\n        .option(\"header\", \"true\")\n        .csv(\"/Users/anuvrat/Documents/kaggle-datasets/hugomathien-soccer-playerattributes.csv\")\n        .na.drop()\n\nval matchesDF \u003d \n    spark\n        .read\n        .option(\"inferSchema\", \"true\")\n        .option(\"header\", \"true\")\n        .csv(\"/Users/anuvrat/Documents/kaggle-datasets/hugomathien-soccer-match.csv\")\n        .na.drop()\nmatchesDF.cache\n\nval homeTeamGKs \u003d matchesDF.select($\"home_player_1\".alias(\"gk_player_id\"))\nval awayTeamGKs \u003d matchesDF.select($\"away_player_1\".alias(\"gk_player_id\"))\n\nval allGKs \u003d homeTeamGKs.union(awayTeamGKs).distinct()\n\nval outfieldPlayerAttributesDF \u003d \n    playerAttributesDF\n        .join(allGKs, $\"player_api_id\" \u003d\u003d\u003d $\"gk_player_id\", \"left_outer\")\n        .where($\"gk_player_id\".isNull)\n        .drop(\"gk_player_id\", \"id\", \"player_fifa_api_id\", \"player_api_id\", \"date\", \"potential\", \"preferred_foot\", \"attacking_work_rate\", \"defensive_work_rate\", \"gk_diving\", \"gk_handling\", \"gk_kicking\", \"gk_positioning\", \"gk_reflexes\")\n        .withColumnRenamed(\"overall_rating\", \"label\")\n        .dropDuplicates()\noutfieldPlayerAttributesDF.cache",
+      "user": "anonymous",
+      "dateUpdated": "Apr 30, 2017 1:02:55 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/scala",
+        "editorHide": false,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\nplayerAttributesDF: org.apache.spark.sql.DataFrame \u003d [id: int, player_fifa_api_id: int ... 40 more fields]\n\nmatchesDF: org.apache.spark.sql.DataFrame \u003d [id: string, country_id: string ... 113 more fields]\n\nres140: matchesDF.type \u003d [id: string, country_id: string ... 113 more fields]\n\nhomeTeamGKs: org.apache.spark.sql.DataFrame \u003d [gk_player_id: int]\n\nawayTeamGKs: org.apache.spark.sql.DataFrame \u003d [gk_player_id: int]\n\nallGKs: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] \u003d [gk_player_id: int]\n\noutfieldPlayerAttributesDF: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] \u003d [label: int, crossing: int ... 27 more fields]\n\nres141: outfieldPlayerAttributesDF.type \u003d [label: int, crossing: int ... 27 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1493577817824_1236480674",
+      "id": "20170430-114337_511698125",
+      "dateCreated": "Apr 30, 2017 11:43:37 AM",
+      "dateStarted": "Apr 30, 2017 1:02:55 PM",
+      "dateFinished": "Apr 30, 2017 1:02:59 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "import org.apache.spark.ml.Pipeline\nimport org.apache.spark.ml.evaluation.RegressionEvaluator\nimport org.apache.spark.ml.feature.VectorAssembler\nimport org.apache.spark.ml.regression.LinearRegression\nimport org.apache.spark.ml.regression.LinearRegressionModel\n\n// Split the data into training and test sets (30% held out for testing).\nval Array(trainingDataDF, testDataDF) \u003d outfieldPlayerAttributesDF.randomSplit(Array(0.7, 0.3))\n\nval assembler \u003d \n    new VectorAssembler()\n        .setInputCols(outfieldPlayerAttributesDF.columns.filter(_ !\u003d \"label\"))\n        .setOutputCol(\"features\")\n\n\nval lr \u003d \n    new LinearRegression()\n        .setMaxIter(30)\n        .setRegParam(0.3)\n        .setElasticNetParam(0.8)\n\nval pipeline \u003d new Pipeline().setStages(Array(assembler, lr))\n\nval model \u003d pipeline.fit(trainingDataDF)\n\nval predictions \u003d model.transform(testDataDF)\n\n// Select example rows to display.\npredictions.select(\"prediction\", \"label\", \"features\").show(5)\n\nval lrModel \u003d model.stages(1).asInstanceOf[LinearRegressionModel]\n\n// Print the coefficients and intercept for linear regression\nprintln(s\"Coefficients: ${lrModel.coefficients} Intercept: ${lrModel.intercept}\")\n\n// Summarize the model over the training set and print out some metrics\nval trainingSummary \u003d lrModel.summary\nprintln(s\"numIterations: ${trainingSummary.totalIterations}\")\nprintln(s\"objectiveHistory: [${trainingSummary.objectiveHistory.mkString(\",\")}]\")\nprintln(s\"RMSE: ${trainingSummary.rootMeanSquaredError}\")\nprintln(s\"r2: ${trainingSummary.r2}\")",
+      "user": "anonymous",
+      "dateUpdated": "Apr 30, 2017 1:04:03 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\nimport org.apache.spark.ml.Pipeline\n\nimport org.apache.spark.ml.evaluation.RegressionEvaluator\n\nimport org.apache.spark.ml.feature.VectorAssembler\n\nimport org.apache.spark.ml.regression.LinearRegression\n\nimport org.apache.spark.ml.regression.LinearRegressionModel\n\n\ntrainingDataDF: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] \u003d [label: int, crossing: int ... 27 more fields]\ntestDataDF: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] \u003d [label: int, crossing: int ... 27 more fields]\n\nassembler: org.apache.spark.ml.feature.VectorAssembler \u003d vecAssembler_f7efecbd4993\n\nlr: org.apache.spark.ml.regression.LinearRegression \u003d linReg_c4b607899d2f\n\npipeline: org.apache.spark.ml.Pipeline \u003d pipeline_00c864258256\n\nmodel: org.apache.spark.ml.PipelineModel \u003d pipeline_00c864258256\n\npredictions: org.apache.spark.sql.DataFrame \u003d [label: int, crossing: int ... 29 more fields]\n+------------------+-----+--------------------+\n|        prediction|label|            features|\n+------------------+-----+--------------------+\n| 58.91442667304667|   55|[59.0,25.0,32.0,4...|\n|49.280862742404175|   56|[20.0,20.0,29.0,2...|\n| 66.57911630100017|   56|[43.0,55.0,56.0,5...|\n| 64.69283272025692|   57|[43.0,43.0,51.0,6...|\n|58.419508344664024|   57|[53.0,49.0,59.0,4...|\n+------------------+-----+--------------------+\nonly showing top 5 rows\n\n\nlrModel: org.apache.spark.ml.regression.LinearRegressionModel \u003d linReg_c4b607899d2f\nCoefficients: [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.04708356986742325,0.05273377362214077,0.0,0.0,0.0,0.443863765608892,0.0,0.004501095593273085,0.022459091388968525,0.0,0.07524234349718825,0.0,0.0,0.0,0.0,0.0,0.015220856584636832,0.0,0.0,0.0] Intercept: 25.59076314419751\n\ntrainingSummary: org.apache.spark.ml.regression.LinearRegressionTrainingSummary \u003d org.apache.spark.ml.regression.LinearRegressionTrainingSummary@60e858ca\nnumIterations: 31\nobjectiveHistory: [0.5,0.42296401169579384,0.3078776160747156,0.28754241067965813,0.22436188842944763,0.2082504226940731,0.20651670409059808,0.20581386363117093,0.2056566182994703,0.20557897893828073,0.20541736181309259,0.20530494499275992,0.2052749182975724,0.20526013284227868,0.20524240814451378,0.20520966063419052,0.20518403922593537,0.20516861623418844,0.20514324456783764,0.20509625044746257,0.20508852349091475,0.20508737182311093,0.2050810014429152,0.20507872640193564,0.2050778433287032,0.20507701068415843,0.20507625649271866,0.2050742382527708,0.20507321722337887,0.20507165606277875,0.2050710218115598]\nRMSE: 3.965412735019472\nr2: 0.6630558200235271\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1493578445489_196052895",
+      "id": "20170430-115405_309830763",
+      "dateCreated": "Apr 30, 2017 11:54:05 AM",
+      "dateStarted": "Apr 30, 2017 1:04:03 PM",
+      "dateFinished": "Apr 30, 2017 1:04:13 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
       "user": "anonymous",
       "config": {},
       "settings": {
@@ -219,9 +330,9 @@
         "forms": {}
       },
       "apps": [],
-      "jobName": "paragraph_1493531474356_-1444299278",
-      "id": "20170429-225114_2021975373",
-      "dateCreated": "Apr 29, 2017 10:51:14 PM",
+      "jobName": "paragraph_1493582001169_649713934",
+      "id": "20170430-125321_834833871",
+      "dateCreated": "Apr 30, 2017 12:53:21 PM",
       "status": "READY",
       "progressUpdateIntervalMs": 500
     }
