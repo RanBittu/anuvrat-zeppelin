@@ -1,0 +1,254 @@
+{
+  "paragraphs": [
+    {
+      "text": "val playerAttributesDF \u003d \n    spark\n        .read\n        .option(\"inferSchema\", \"true\")\n        .option(\"header\", \"true\")\n        .csv(\"/Users/anuvrat/Documents/kaggle-datasets/hugomathien-soccer-playerattributes.csv\")\n        .na.drop()\n        .drop(\"id\", \"player_fifa_api_id\", \"player_api_id\", \"date\", \"potential\", \"preferred_foot\", \"attacking_work_rate\", \"defensive_work_rate\")\n        .withColumnRenamed(\"overall_rating\", \"label\")\n\nplayerAttributesDF.show",
+      "user": "anonymous",
+      "dateUpdated": "Apr 30, 2017 10:05:26 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\nplayerAttributesDF: org.apache.spark.sql.DataFrame \u003d [label: int, crossing: int ... 32 more fields]\n+-----+--------+---------+----------------+-------------+-------+---------+-----+------------------+------------+------------+------------+------------+-------+---------+-------+----------+-------+-------+--------+----------+----------+-------------+-----------+------+---------+-------+---------------+--------------+---------+-----------+----------+--------------+-----------+\n|label|crossing|finishing|heading_accuracy|short_passing|volleys|dribbling|curve|free_kick_accuracy|long_passing|ball_control|acceleration|sprint_speed|agility|reactions|balance|shot_power|jumping|stamina|strength|long_shots|aggression|interceptions|positioning|vision|penalties|marking|standing_tackle|sliding_tackle|gk_diving|gk_handling|gk_kicking|gk_positioning|gk_reflexes|\n+-----+--------+---------+----------------+-------------+-------+---------+-----+------------------+------------+------------+------------+------------+-------+---------+-------+----------+-------+-------+--------+----------+----------+-------------+-----------+------+---------+-------+---------------+--------------+---------+-----------+----------+--------------+-----------+\n|   67|      49|       44|              71|           61|     44|       51|   45|                39|          64|          49|          60|          64|     59|       47|     65|        55|     58|     54|      76|        35|        71|           70|         45|    54|       48|     65|             69|            69|        6|         11|        10|             8|          8|\n|   67|      49|       44|              71|           61|     44|       51|   45|                39|          64|          49|          60|          64|     59|       47|     65|        55|     58|     54|      76|        35|        71|           70|         45|    54|       48|     65|             69|            69|        6|         11|        10|             8|          8|\n|   62|      49|       44|              71|           61|     44|       51|   45|                39|          64|          49|          60|          64|     59|       47|     65|        55|     58|     54|      76|        35|        63|           41|         45|    54|       48|     65|             66|            69|        6|         11|        10|             8|          8|\n|   61|      48|       43|              70|           60|     43|       50|   44|                38|          63|          48|          60|          64|     59|       46|     65|        54|     58|     54|      76|        34|        62|           40|         44|    53|       47|     62|             63|            66|        5|         10|         9|             7|          7|\n|   61|      48|       43|              70|           60|     43|       50|   44|                38|          63|          48|          60|          64|     59|       46|     65|        54|     58|     54|      76|        34|        62|           40|         44|    53|       47|     62|             63|            66|        5|         10|         9|             7|          7|\n|   74|      80|       53|              58|           71|     40|       73|   70|                69|          68|          71|          79|          78|     78|       67|     90|        71|     85|     79|      56|        62|        68|           67|         60|    66|       59|     76|             75|            78|       14|          7|         9|             9|         12|\n|   74|      80|       53|              58|           71|     32|       73|   70|                69|          68|          71|          79|          78|     78|       67|     90|        71|     85|     79|      56|        60|        68|           67|         60|    66|       59|     76|             75|            78|       14|          7|         9|             9|         12|\n|   73|      79|       52|              57|           70|     29|       71|   68|                69|          68|          70|          79|          78|     78|       67|     90|        71|     84|     79|      56|        59|        67|           66|         58|    65|       59|     76|             75|            78|       14|          7|         9|             9|         12|\n|   73|      79|       51|              57|           70|     29|       71|   68|                69|          68|          70|          79|          78|     78|       67|     90|        71|     84|     79|      56|        58|        67|           66|         58|    65|       59|     76|             75|            78|       14|          7|         9|             9|         12|\n|   73|      79|       51|              57|           70|     29|       71|   68|                69|          68|          70|          79|          78|     78|       67|     90|        71|     84|     79|      56|        58|        67|           66|         58|    65|       59|     76|             75|            78|       14|          7|         9|             9|         12|\n|   73|      79|       51|              57|           70|     29|       71|   68|                69|          68|          70|          79|          78|     78|       67|     90|        71|     84|     79|      56|        58|        67|           66|         58|    65|       59|     76|             75|            78|       14|          7|         9|             9|         12|\n|   74|      79|       51|              57|           70|     29|       71|   68|                69|          68|          70|          80|          78|     78|       67|     90|        71|     84|     79|      56|        58|        67|           66|         58|    65|       59|     76|             75|            78|       14|          7|         9|             9|         12|\n|   73|      79|       51|              57|           70|     29|       67|   68|                69|          68|          68|          79|          78|     78|       67|     90|        71|     84|     79|      56|        58|        67|           66|         58|    65|       59|     76|             75|            78|       14|          7|         9|             9|         12|\n|   71|      78|       50|              56|           69|     28|       66|   67|                68|          67|          67|          79|          82|     79|       71|     90|        70|     84|     79|      50|        56|        66|           65|         57|    64|       58|     73|             72|            72|       13|          6|         8|             8|         11|\n|   71|      78|       50|              56|           69|     28|       66|   67|                68|          67|          67|          79|          82|     79|       71|     90|        70|     84|     79|      50|        56|        66|           65|         57|    64|       58|     73|             72|            72|       13|          6|         8|             8|         11|\n|   71|      78|       50|              56|           69|     28|       66|   67|                68|          67|          67|          79|          82|     79|       71|     90|        70|     84|     79|      50|        56|        66|           65|         57|    64|       58|     73|             72|            72|       13|          6|         8|             8|         11|\n|   70|      77|       50|              51|           67|     28|       66|   67|                68|          67|          66|          79|          82|     79|       69|     90|        70|     84|     79|      50|        56|        66|           62|         57|    64|       58|     73|             72|            72|       13|          6|         8|             8|         11|\n|   70|      77|       50|              51|           67|     28|       66|   67|                68|          67|          66|          84|          82|     81|       69|     90|        70|     84|     80|      50|        56|        66|           62|         57|    64|       58|     73|             72|            72|       13|          6|         8|             8|         11|\n|   70|      77|       50|              51|           67|     28|       66|   67|                68|          67|          66|          84|          82|     81|       69|     90|        70|     84|     80|      50|        56|        66|           62|         57|    64|       58|     73|             72|            72|       13|          6|         8|             8|         11|\n|   70|      77|       50|              51|           67|     28|       66|   66|                68|          67|          65|          84|          82|     81|       69|     90|        70|     84|     79|      49|        55|        66|           62|         57|    61|       58|     73|             72|            72|       13|          6|         8|             8|         11|\n+-----+--------+---------+----------------+-------------+-------+---------+-----+------------------+------------+------------+------------+------------+-------+---------+-------+----------+-------+-------+--------+----------+----------+-------------+-----------+------+---------+-------+---------------+--------------+---------+-----------+----------+--------------+-----------+\nonly showing top 20 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1493491161624_-1697194952",
+      "id": "20170429-113921_1788636708",
+      "dateCreated": "Apr 29, 2017 11:39:21 AM",
+      "dateStarted": "Apr 30, 2017 10:05:26 AM",
+      "dateFinished": "Apr 30, 2017 10:05:28 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "import org.apache.spark.ml.feature.VectorAssembler\n\n// Split the data into training and test sets (30% held out for testing).\nval Array(trainingDataDF, testDataDF) \u003d playerAttributesDF.randomSplit(Array(0.7, 0.3))\n\nval assembler \u003d \n    new VectorAssembler()\n        .setInputCols(playerAttributesDF.columns.filter(_ !\u003d \"label\"))\n        .setOutputCol(\"features\")\n",
+      "user": "anonymous",
+      "dateUpdated": "Apr 30, 2017 10:05:44 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\nimport org.apache.spark.ml.feature.VectorAssembler\n\n\ntrainingDataDF: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] \u003d [label: int, crossing: int ... 32 more fields]\ntestDataDF: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] \u003d [label: int, crossing: int ... 32 more fields]\n\nassembler: org.apache.spark.ml.feature.VectorAssembler \u003d vecAssembler_2d8238b77e8e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1493503110403_-389770123",
+      "id": "20170429-145830_1147723870",
+      "dateCreated": "Apr 29, 2017 2:58:30 PM",
+      "dateStarted": "Apr 30, 2017 10:05:44 AM",
+      "dateFinished": "Apr 30, 2017 10:05:44 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "import org.apache.spark.ml.Pipeline\nimport org.apache.spark.ml.regression.DecisionTreeRegressor\n\n// Train a DecisionTree model.\nval decisionTree \u003d \n    new DecisionTreeRegressor()\n        .setLabelCol(\"label\")\n        .setFeaturesCol(\"features\")\n\nval pipeline \u003d\n    new Pipeline()\n        .setStages(Array(assembler, decisionTree))\n\nval model \u003d pipeline.fit(trainingDataDF)\n",
+      "user": "anonymous",
+      "dateUpdated": "Apr 30, 2017 10:05:51 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\nimport org.apache.spark.ml.Pipeline\n\nimport org.apache.spark.ml.regression.DecisionTreeRegressor\n\ndecisionTree: org.apache.spark.ml.regression.DecisionTreeRegressor \u003d dtr_328c622aba44\n\npipeline: org.apache.spark.ml.Pipeline \u003d pipeline_55d3c127a662\n\nmodel: org.apache.spark.ml.PipelineModel \u003d pipeline_55d3c127a662\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1493499299502_1667290731",
+      "id": "20170429-135459_322596137",
+      "dateCreated": "Apr 29, 2017 1:54:59 PM",
+      "dateStarted": "Apr 30, 2017 10:05:51 AM",
+      "dateFinished": "Apr 30, 2017 10:06:00 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "import org.apache.spark.ml.evaluation.RegressionEvaluator\nimport org.apache.spark.ml.regression.DecisionTreeRegressionModel\n\nval predictions \u003d model.transform(testDataDF)\n\n// Select (prediction, true label) and compute test error.\nval evaluator \u003d new RegressionEvaluator()\n  .setLabelCol(\"label\")\n  .setPredictionCol(\"prediction\")\n  .setMetricName(\"rmse\")\n\nval rmse \u003d evaluator.evaluate(predictions)\nprintln(\"Root Mean Squared Error (RMSE) on test data \u003d \" + rmse)\n\nval treeModel \u003d model.stages(1).asInstanceOf[DecisionTreeRegressionModel]\nprintln(\"Learned regression tree model:\\n\" + treeModel.toDebugString)",
+      "user": "anonymous",
+      "dateUpdated": "Apr 30, 2017 10:07:01 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\nimport org.apache.spark.ml.evaluation.RegressionEvaluator\n\nimport org.apache.spark.ml.regression.DecisionTreeRegressionModel\n\npredictions: org.apache.spark.sql.DataFrame \u003d [label: int, crossing: int ... 34 more fields]\n\nevaluator: org.apache.spark.ml.evaluation.RegressionEvaluator \u003d regEval_4b53ccf62cc6\n\nrmse: Double \u003d 3.436980212270387\nRoot Mean Squared Error (RMSE) on test data \u003d 3.436980212270387\n\ntreeModel: org.apache.spark.ml.regression.DecisionTreeRegressionModel \u003d DecisionTreeRegressionModel (uid\u003ddtr_328c622aba44) of depth 5 with 63 nodes\nLearned regression tree model:\nDecisionTreeRegressionModel (uid\u003ddtr_328c622aba44) of depth 5 with 63 nodes\n  If (feature 13 \u003c\u003d 67.0)\n   If (feature 13 \u003c\u003d 58.0)\n    If (feature 9 \u003c\u003d 64.0)\n     If (feature 25 \u003c\u003d 61.0)\n      If (feature 31 \u003c\u003d 61.0)\n       Predict: 57.73474621012143\n      Else (feature 31 \u003e 61.0)\n       Predict: 66.73809523809524\n     Else (feature 25 \u003e 61.0)\n      If (feature 26 \u003c\u003d 68.0)\n       Predict: 62.47724526782118\n      Else (feature 26 \u003e 68.0)\n       Predict: 66.95824777549623\n    Else (feature 9 \u003e 64.0)\n     If (feature 9 \u003c\u003d 70.0)\n      If (feature 26 \u003c\u003d 68.0)\n       Predict: 63.29391787588762\n      Else (feature 26 \u003e 68.0)\n       Predict: 68.3655589123867\n     Else (feature 9 \u003e 70.0)\n      If (feature 0 \u003c\u003d 64.0)\n       Predict: 66.0203426124197\n      Else (feature 0 \u003e 64.0)\n       Predict: 68.98449612403101\n   Else (feature 13 \u003e 58.0)\n    If (feature 9 \u003c\u003d 69.0)\n     If (feature 26 \u003c\u003d 70.0)\n      If (feature 28 \u003c\u003d 71.0)\n       Predict: 64.1919004960391\n      Else (feature 28 \u003e 71.0)\n       Predict: 72.17254174397031\n     Else (feature 26 \u003e 70.0)\n      If (feature 25 \u003c\u003d 73.0)\n       Predict: 69.11441517983575\n      Else (feature 25 \u003e 73.0)\n       Predict: 73.11678832116789\n    Else (feature 9 \u003e 69.0)\n     If (feature 9 \u003c\u003d 74.0)\n      If (feature 26 \u003c\u003d 72.0)\n       Predict: 68.27170582226762\n      Else (feature 26 \u003e 72.0)\n       Predict: 72.07364341085271\n     Else (feature 9 \u003e 74.0)\n      If (feature 9 \u003c\u003d 80.0)\n       Predict: 71.23217179902755\n      Else (feature 9 \u003e 80.0)\n       Predict: 75.08415841584159\n  Else (feature 13 \u003e 67.0)\n   If (feature 13 \u003c\u003d 75.0)\n    If (feature 9 \u003c\u003d 73.0)\n     If (feature 26 \u003c\u003d 74.0)\n      If (feature 29 \u003c\u003d 68.0)\n       Predict: 68.82492509906253\n      Else (feature 29 \u003e 68.0)\n       Predict: 74.88275862068966\n     Else (feature 26 \u003e 74.0)\n      If (feature 25 \u003c\u003d 78.0)\n       Predict: 73.57044987440055\n      Else (feature 25 \u003e 78.0)\n       Predict: 77.56831119544592\n    Else (feature 9 \u003e 73.0)\n     If (feature 9 \u003c\u003d 78.0)\n      If (feature 13 \u003c\u003d 71.0)\n       Predict: 72.26225908758234\n      Else (feature 13 \u003e 71.0)\n       Predict: 73.91172893136402\n     Else (feature 9 \u003e 78.0)\n      If (feature 9 \u003c\u003d 83.0)\n       Predict: 75.60166872682323\n      Else (feature 9 \u003e 83.0)\n       Predict: 78.14776632302406\n   Else (feature 13 \u003e 75.0)\n    If (feature 9 \u003c\u003d 81.0)\n     If (feature 26 \u003c\u003d 80.0)\n      If (feature 9 \u003c\u003d 75.0)\n       Predict: 74.57858161083392\n      Else (feature 9 \u003e 75.0)\n       Predict: 77.16849744998038\n     Else (feature 26 \u003e 80.0)\n      If (feature 27 \u003c\u003d 79.0)\n       Predict: 78.70712694877506\n      Else (feature 27 \u003e 79.0)\n       Predict: 81.07436399217221\n    Else (feature 9 \u003e 81.0)\n     If (feature 13 \u003c\u003d 83.0)\n      If (feature 19 \u003c\u003d 76.0)\n       Predict: 79.16587355540449\n      Else (feature 19 \u003e 76.0)\n       Predict: 81.07385620915032\n     Else (feature 13 \u003e 83.0)\n      If (feature 22 \u003c\u003d 81.0)\n       Predict: 82.9727626459144\n      Else (feature 22 \u003e 81.0)\n       Predict: 85.32441471571906\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1493506640506_1084263613",
+      "id": "20170429-155720_1833324362",
+      "dateCreated": "Apr 29, 2017 3:57:20 PM",
+      "dateStarted": "Apr 30, 2017 10:07:01 AM",
+      "dateFinished": "Apr 30, 2017 10:07:04 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "import org.apache.spark.ml.Pipeline\nimport org.apache.spark.ml.regression.LinearRegression\n\nval lr \u003d \n    new LinearRegression()\n        .setMaxIter(10)\n        .setRegParam(0.3)\n        .setElasticNetParam(0.8)\n\nval pipeline \u003d new Pipeline().setStages(Array(assembler, lr))\n\nval model \u003d pipeline.fit(trainingDataDF)\n",
+      "user": "anonymous",
+      "dateUpdated": "Apr 30, 2017 10:07:14 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\nimport org.apache.spark.ml.Pipeline\n\nimport org.apache.spark.ml.regression.LinearRegression\n\nlr: org.apache.spark.ml.regression.LinearRegression \u003d linReg_82f2276ceb0c\n\npipeline: org.apache.spark.ml.Pipeline \u003d pipeline_5bc9421a883e\n\nmodel: org.apache.spark.ml.PipelineModel \u003d pipeline_5bc9421a883e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1493504622025_-1667740168",
+      "id": "20170429-152342_1660228515",
+      "dateCreated": "Apr 29, 2017 3:23:42 PM",
+      "dateStarted": "Apr 30, 2017 10:07:14 AM",
+      "dateFinished": "Apr 30, 2017 10:07:24 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "import org.apache.spark.ml.evaluation.RegressionEvaluator\nimport org.apache.spark.ml.regression.DecisionTreeRegressionModel\nimport org.apache.spark.ml.regression.LinearRegressionModel\n\nval predictions \u003d model.transform(testDataDF)\n\n// Select example rows to display.\npredictions.select(\"prediction\", \"label\", \"features\").show(5)\n\n// Select (prediction, true label) and compute test error.\nval evaluator \u003d new RegressionEvaluator()\n  .setLabelCol(\"label\")\n  .setPredictionCol(\"prediction\")\n  .setMetricName(\"rmse\")\n\nval rmse \u003d evaluator.evaluate(predictions)\nprintln(\"Root Mean Squared Error (RMSE) on test data \u003d \" + rmse)\n\nval lrModel \u003d model.stages(1).asInstanceOf[LinearRegressionModel]\n\n// Print the coefficients and intercept for linear regression\nprintln(s\"Coefficients: ${lrModel.coefficients} Intercept: ${lrModel.intercept}\")\n\n// Summarize the model over the training set and print out some metrics\nval trainingSummary \u003d lrModel.summary\nprintln(s\"numIterations: ${trainingSummary.totalIterations}\")\nprintln(s\"objectiveHistory: [${trainingSummary.objectiveHistory.mkString(\",\")}]\")\n\ntrainingSummary.residuals.show()\nprintln(s\"RMSE: ${trainingSummary.rootMeanSquaredError}\")\nprintln(s\"r2: ${trainingSummary.r2}\")",
+      "user": "anonymous",
+      "dateUpdated": "Apr 30, 2017 10:08:22 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\nimport org.apache.spark.ml.evaluation.RegressionEvaluator\n\nimport org.apache.spark.ml.regression.DecisionTreeRegressionModel\n\nimport org.apache.spark.ml.regression.LinearRegressionModel\n\npredictions: org.apache.spark.sql.DataFrame \u003d [label: int, crossing: int ... 34 more fields]\n+-----------------+-----+--------------------+\n|       prediction|label|            features|\n+-----------------+-----+--------------------+\n|53.25888892169204|   38|[32.0,27.0,66.0,4...|\n|53.25888892169204|   38|[32.0,27.0,66.0,4...|\n|46.68338294121088|   40|[19.0,42.0,41.0,1...|\n|58.36466231154517|   40|[30.0,38.0,31.0,4...|\n| 56.6749394670906|   41|[32.0,32.0,28.0,4...|\n+-----------------+-----+--------------------+\nonly showing top 5 rows\n\n\nevaluator: org.apache.spark.ml.evaluation.RegressionEvaluator \u003d regEval_6605a8a84f99\n\nrmse: Double \u003d 3.614447581847953\nRoot Mean Squared Error (RMSE) on test data \u003d 3.614447581847953\n\nlrModel: org.apache.spark.ml.regression.LinearRegressionModel \u003d linReg_82f2276ceb0c\nCoefficients: [0.0,0.0,0.0369943373713403,0.05381410506387828,0.0,0.00624093765913796,0.0,0.0,0.04510811996084558,0.09030299231943001,0.006826009745237787,0.015901693433238367,0.0,0.3949019352575584,0.0,0.01893357274473481,0.010080498224688967,0.0,0.07184258655875678,0.0,-0.0,0.0,0.0,0.0,0.0036208490285270034,0.0,0.0,0.0,0.06703368073911488,0.03166597332095928,0.0,0.034880905983231375,0.03333284277663585] Intercept: 17.325070775463963\n\ntrainingSummary: org.apache.spark.ml.regression.LinearRegressionTrainingSummary \u003d org.apache.spark.ml.regression.LinearRegressionTrainingSummary@4e40921f\nnumIterations: 11\nobjectiveHistory: [0.5000000000000071,0.43364365150372985,0.3185907232470917,0.2596737985556238,0.20864557434512238,0.19950610054682746,0.19257905431184752,0.19026668750015766,0.1897648712050194,0.1893292175781864,0.18911602496003158]\n+-------------------+\n|          residuals|\n+-------------------+\n| -17.22574983259902|\n| -17.22574983259902|\n| -15.25888892169204|\n| -18.20475959944614|\n| -18.20475959944614|\n|-15.225749832599021|\n|-18.364662311545167|\n| -8.774752370658696|\n| -19.54432700634439|\n| -19.54432700634439|\n| -8.182924426094793|\n| -8.182924426094793|\n| -15.93390554243748|\n| -15.93390554243748|\n|-15.641606624313965|\n| -15.71152949383761|\n| -15.71152949383761|\n| -22.67971063336629|\n| -22.67971063336629|\n| -22.67971063336629|\n+-------------------+\nonly showing top 20 rows\n\nRMSE: 3.611352435946586\nr2: 0.7365279268730087\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1493504553643_-1789228876",
+      "id": "20170429-152233_575881536",
+      "dateCreated": "Apr 29, 2017 3:22:33 PM",
+      "dateStarted": "Apr 30, 2017 10:08:22 AM",
+      "dateFinished": "Apr 30, 2017 10:08:28 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "user": "anonymous",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1493531474356_-1444299278",
+      "id": "20170429-225114_2021975373",
+      "dateCreated": "Apr 29, 2017 10:51:14 PM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "kaggle/hugomathien-soccer/player-ratings",
+  "id": "2CHVKEH4D",
+  "angularObjects": {
+    "2CH7BP7KT:shared_process": [],
+    "2CE1Q7FNS:shared_process": [],
+    "2CEWZDHE5:shared_process": [],
+    "2CEQR7CYC:shared_process": [],
+    "2CG6QTD3P:shared_process": [],
+    "2CGDV6WAH:shared_process": [],
+    "2CEV9AP7V:shared_process": [],
+    "2CE1JN2YB:shared_process": [],
+    "2CHW2SF72:shared_process": [],
+    "2CG8246JE:shared_process": [],
+    "2CENRHSSQ:shared_process": [],
+    "2CG83XWYR:shared_process": [],
+    "2CE93TCQV:shared_process": [],
+    "2CEAY7X4R:shared_process": [],
+    "2CHJ9P2T3:shared_process": [],
+    "2CFH8VTXZ:shared_process": [],
+    "2CFAXNQ3G:shared_process": [],
+    "2CFZF6MH5:shared_process": [],
+    "2CFJ9N49F:shared_process": []
+  },
+  "config": {},
+  "info": {}
+}
