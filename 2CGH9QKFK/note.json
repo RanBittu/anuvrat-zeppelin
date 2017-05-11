@@ -1,0 +1,78 @@
+{
+  "paragraphs": [
+    {
+      "text": "spark",
+      "user": "anonymous",
+      "dateUpdated": "Apr 29, 2017 11:36:11 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\nres0: org.apache.spark.sql.SparkSession \u003d org.apache.spark.sql.SparkSession@292fca33\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1493490729359_-751989793",
+      "id": "20170429-113209_2121838743",
+      "dateCreated": "Apr 29, 2017 11:32:09 AM",
+      "dateStarted": "Apr 29, 2017 11:36:11 AM",
+      "dateFinished": "Apr 29, 2017 11:36:34 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "user": "anonymous",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1493490757008_-1213273076",
+      "id": "20170429-113237_1482592387",
+      "dateCreated": "Apr 29, 2017 11:32:37 AM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "~Trash/test",
+  "id": "2CGH9QKFK",
+  "angularObjects": {
+    "2CH7BP7KT:shared_process": [],
+    "2CE1Q7FNS:shared_process": [],
+    "2CEWZDHE5:shared_process": [],
+    "2CEQR7CYC:shared_process": [],
+    "2CG6QTD3P:shared_process": [],
+    "2CGDV6WAH:shared_process": [],
+    "2CEV9AP7V:shared_process": [],
+    "2CE1JN2YB:shared_process": [],
+    "2CHW2SF72:shared_process": [],
+    "2CG8246JE:shared_process": [],
+    "2CENRHSSQ:shared_process": [],
+    "2CG83XWYR:shared_process": [],
+    "2CE93TCQV:shared_process": [],
+    "2CEAY7X4R:shared_process": [],
+    "2CHJ9P2T3:shared_process": [],
+    "2CFH8VTXZ:shared_process": [],
+    "2CFAXNQ3G:shared_process": [],
+    "2CFZF6MH5:shared_process": [],
+    "2CFJ9N49F:shared_process": []
+  },
+  "config": {},
+  "info": {}
+}
